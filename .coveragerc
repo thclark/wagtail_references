@@ -1,0 +1,9 @@
+[paths]
+source =
+    wagtail_events/
+
+[run]
+omit =
+    env/*
+    */tests/*
+    */migrations/*

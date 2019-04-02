@@ -1,0 +1,17 @@
+dist: trusty
+language: python
+python:
+- '3.6'
+install:
+- pip install tox-travis
+script:
+- tox -r
+deploy:
+  provider: pypi
+  skip_cleanup: true
+  skip_existing: true
+  user: thclark
+  password:
+    secure: VmA54z8qGco4Cayw8qTp/qgaPfUN3mS0qfcBOlwoQk2Y9dDtRNVH+tNgfD1n5A7P4w5QL8zL818++V/fu0d/bSPTPj8/rQub5CpTSSAX27FxPzuLOPM07Rxs298MBOfboN88fjTytQ7P26mFDWXyxTf6lUUTS0EBUkeqhZCjvc8wgyMeibH7g18ob+rjeBX7pQA0Y93JAruxarP80222/p8NfJ5EtFWLWPpiHG4k7RRziA1L1cR8BexaANtwTeoNedbn0i11esRmipgZ/phfq08chWTog872ZTh5k0qrAmlq9NIqtshv+kktJJhL6060WNwC3g9w6D8RP3E/k98WlDFYxT4d9RhbJFcUkeB/RiY4biIVMzUTbBYFxxtUnMu1TJ+jM62/otyp/y3bgC2LlC0bHLB54xXgeLoAyTLxiyj4wVnzjOTZp0BHu8r/nCIe6+vSr5lF+jp24/xnL32sp8KIuUaXGyOxgqDBnIEG1huN3SMtHn5+u3eYICtzN8SYagNfLUW+ygi0JI2xX534GLmxf5wZ6ifneEChrw6L8auPiZGU2DCqqBDn3gzqcCJcOBbe2Kwf3ekmjPG8K7yjdF4Q8PEssMiuNEea10GPnAi9FgRGk7jFIztHcDBmSo7C/X9zu5T3j/piD5jqJw2SRMNoU1g2cUt1lWshP5MLZyU=
+  on:
+    branch: master
