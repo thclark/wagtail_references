@@ -11,7 +11,6 @@
 #   To deploy on PYPI follow the instructions at the bottom of:
 #       https://packaging.python.org/tutorials/distributing-packages/#uploading-your-project-to-pypi
 
-from wagtail_references import __version__
 from setuptools import setup, find_packages
 
 with open('README.md') as f:
@@ -19,7 +18,7 @@ with open('README.md') as f:
 
 setup(
     name='wagtail_references',
-    version=__version__,
+    version='0.0.2',
     description='BibTeX references for Wagtail',
     long_description=readme_text,
     author='thclark',
