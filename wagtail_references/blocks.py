@@ -11,10 +11,10 @@ class ReferenceChooserBlock(ChooserBlock):
         from wagtail_references import get_reference_model
         return get_reference_model()
 
-    @cached_property
-    def widget(self):
-        from wagtail_references.widgets import AdminReferenceChooser
-        return AdminReferenceChooser
+    # @cached_property
+    # def widget(self):
+    #     from wagtail_references.widgets import AdminReferenceChooser
+    #     return AdminReferenceChooser
 
     # def render_basic(self, value, context=None):
     #     if value:

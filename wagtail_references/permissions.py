@@ -1,6 +1,6 @@
 from wagtail.core.permission_policies.collections import CollectionOwnershipPermissionPolicy
-from references import get_reference_model
-from references.models import Reference
+from wagtail_references import get_reference_model
+from wagtail_references.models import Reference
 
 
 permission_policy = CollectionOwnershipPermissionPolicy(

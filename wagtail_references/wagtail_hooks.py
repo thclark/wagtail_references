@@ -10,10 +10,10 @@ from wagtail.admin.site_summary import SummaryItem
 from wagtail.core import hooks
 
 
-from references import admin_urls, get_reference_model
+from wagtail_references import admin_urls, get_reference_model
 # from references.api.admin.endpoints import ReferencesAdminAPIEndpoint
-from references.forms import GroupReferencePermissionFormSet
-from references.permissions import permission_policy
+from wagtail_references.forms import GroupReferencePermissionFormSet
+from wagtail_references.permissions import permission_policy
 
 
 @hooks.register('register_admin_urls')

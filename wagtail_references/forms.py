@@ -2,9 +2,8 @@ from django import forms
 from django.forms.models import modelform_factory
 from django.utils.translation import ugettext as _
 from wagtail.admin.forms.collections import (BaseCollectionMemberForm, collection_member_permission_formset_factory)
-# from references.formats import get_image_formats
-from references.models import Reference
-from references.permissions import permission_policy as references_permission_policy
+from wagtail_references.models import Reference
+from wagtail_references.permissions import permission_policy as references_permission_policy
 
 
 def formfield_for_dbfield(db_field, **kwargs):

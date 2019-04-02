@@ -3,7 +3,7 @@ from django.conf.urls import url
 from wagtail_references.views import references, chooser
 
 
-app_name = 'references'
+app_name = 'wagtail_references'
 
 
 urlpatterns = [
