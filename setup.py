@@ -38,9 +38,8 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
+        'django>=2.1',
         'wagtail>=2.3',
-        'isoweek==1.3.3',
-        'python-dateutil==2.8.0',
         'bibtexparser>=1.1.0',
     ],
     keywords=['wagtail', 'django', 'events']

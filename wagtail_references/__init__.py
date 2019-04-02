@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 default_app_config = 'wagtail_references.apps.ReferencesAppConfig'
