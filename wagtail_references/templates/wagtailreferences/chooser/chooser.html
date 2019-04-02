@@ -1,0 +1,21 @@
+{% load i18n %}
+{% trans "Choose a reference" as choose_str %}
+{% include "wagtailadmin/shared/header.html" with title=choose_str merged=1 tabbed=1 icon="list-ol" %}
+
+<div class="tab-content">
+    <section id="search" class="{% if not uploadform.errors %}active{% endif %} nice-padding">
+        <form class="reference-search search-bar" action="{% url 'wagtailreferences:chooser' %}{% if will_select_format %}?select_format=true{% endif %}" method="GET" autocomplete="off" novalidate>
+            <ul class="fields">
+                {% for field in searchform %}
+                    {% include "wagtailadmin/shared/field_as_li.html" with field=field %}
+                {% endfor %}
+                {% if collections %}
+                    {% include "wagtailadmin/shared/collection_chooser.html" %}
+                {% endif %}
+            </ul>
+        </form>
+        <div id="reference-results">
+            {% include "wagtailreferences/chooser/results.html" %}
+        </div>
+    </section>
+</div>

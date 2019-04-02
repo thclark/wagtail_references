@@ -1,0 +1,47 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailimages_tags %}
+{% load i18n %}
+
+{% block titletag %}{% trans "References" %}{% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    <script>
+        window.headerSearch = {
+            url: "{% url 'wagtailreferences:index' %}",
+            termInput: "#id_q",
+            targetOutput: "#reference-results"
+        }
+
+        $(function() {
+            $('#collection_chooser_collection_id').on('change', function() {
+                this.form.submit();
+            })
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% trans "References" as ref_str %}
+
+    {% if user_can_add %}
+        {% trans "Add a reference" as add_ref_str %}
+        {% include "wagtailadmin/shared/header.html" with title=ref_str add_link="wagtailreferences:add" icon="list-ol" add_text=add_ref_str search_url="wagtailreferences:index" %}
+    {% else %}
+        {% include "wagtailadmin/shared/header.html" with title=ref_str icon="list-ol" search_url="wagtailreferences:index" %}
+    {% endif %}
+
+    <div class="nice-padding">
+        {% if collections %}
+            <form class="image-search search-bar" action="{% url 'wagtailreferences:index' %}" method="GET" novalidate>
+                <ul class="fields">
+                    {% include "wagtailadmin/shared/collection_chooser.html" %}
+                </ul>
+            </form>
+        {% endif %}
+
+        <div id="reference-results">
+            {% include "wagtailreferences/references/results.html" %}
+        </div>
+    </div>
+
+{% endblock %}

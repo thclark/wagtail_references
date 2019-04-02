@@ -1,0 +1,45 @@
+{% load wagtailimages_tags wagtailadmin_tags %}
+{% load i18n %}
+{% if references %}
+    {% if is_searching %}
+        <h2>
+        {% blocktrans count counter=references.paginator.count %}
+            There is {{ counter }} match
+        {% plural %}
+            There are {{ counter }} matches
+        {% endblocktrans %}
+        </h2>
+
+        {% search_other %}
+    {% else %}
+        <h2>{% trans "Latest references" %}</h2>
+    {% endif %}
+
+    <ul class="listing horiz references">
+        {% for reference in references %}
+            <li>
+                <a class="image-choice" title="{% if collections %}{{ reference.collection.name }} » {% endif %}{{ reference.slug }}" href="{% url 'wagtailreferences:edit' reference.id %}">
+                    {% include "wagtailreferences/references/results_reference.html" %}
+                    <h3>{{ reference.bibtex|ellipsistrim:60 }}</h3>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% include "wagtailadmin/shared/pagination_nav.html" with items=references is_searching=is_searching query_string=query_string %}
+
+{% else %}
+    {% if is_searching %}
+        <h2>{% blocktrans %}Sorry, no references match "<em>{{ query_string }}</em>"{% endblocktrans %}</h2>
+
+        {% search_other %}
+    {% else %}
+        {% if current_collection %}
+            {% trans "You haven't uploaded any references in this collection. " as no_ref_str %}
+        {% else %}
+            {% trans "You haven't uploaded any references. " as no_ref_str %}
+        {% endif %}
+        {% trans "Add one now." as add_ref_str %}
+        <p>{{ no_ref_str }}<a href="{% url 'wagtailreferences:add' %}">{{ add_ref_str }}</a></p>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,11 @@
+{% load i18n wagtailadmin_tags %}
+
+<li class="icon icon-list-ol">
+    <a href="{% url 'wagtailreferences:index' %}">
+    {% blocktrans count counter=total_references with total_references|intcomma as total %}
+        <span>{{ total }}</span> Reference
+    {% plural %}
+        <span>{{ total }}</span> References
+    {% endblocktrans %}
+    </a>
+</li>

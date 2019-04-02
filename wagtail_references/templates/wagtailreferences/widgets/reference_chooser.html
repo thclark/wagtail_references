@@ -1,0 +1,13 @@
+{% extends "wagtailadmin/widgets/chooser.html" %}
+
+{% block chooser_class %}reference-chooser{% endblock %}
+
+{% block chosen_state_view %}
+    <div class="preview-reference">
+        {% if reference %}
+            {{ reference.slug }}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block edit_chosen_item_url %}{% if reference %}{% url 'wagtailreferences:edit' reference.id %}{% endif %}{% endblock %}

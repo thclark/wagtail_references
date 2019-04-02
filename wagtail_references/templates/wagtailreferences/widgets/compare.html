@@ -1,0 +1,37 @@
+
+{% if reference_a != reference_b %}
+    {% if reference_a and reference_b %}
+        {# Reference has changed #}
+
+        <div class="preview-reference deletion">
+            {{  reference_a.bibtex }}
+        </div>
+
+        <div class="preview-reference addition">
+            {{  reference_b.bibtex }}
+        </div>
+
+    {% elif reference_b %}
+        {# Reference has been added #}
+
+        <div class="preview-reference addition">
+            {{  reference_b.bibtex }}
+        </div>
+
+    {% elif reference_a %}
+        {# Reference has been removed #}
+
+        <div class="preview-reference deletion">
+            {{  reference_a.bibtex }}
+        </div>
+
+    {% endif %}
+{% else %}
+    <div class="preview-reference">
+        {% if reference_a %}
+            {{  reference_a.bibtex }}
+        {% else %}
+            <div></div>
+        {% endif %}
+    </div>
+{% endif %}

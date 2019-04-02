@@ -1,0 +1,27 @@
+{% load wagtailadmin_tags %}
+{% load i18n %}
+{% if references %}
+    {% if is_searching %}
+        <h2>
+        {% blocktrans count counter=references.paginator.count %}
+            There is {{ counter }} match
+        {% plural %}
+            There are {{ counter }} matches
+        {% endblocktrans %}
+        </h2>
+    {% else %}
+        <h2>{% trans "Latest references" %}</h2>
+    {% endif %}
+
+    <ul class="listing horiz references chooser">
+        {% for reference in references %}
+            <li>
+                <a class="image-choice" title="{% if collections %}{{ reference.collection.name }} » {% endif %}{{ reference.slug }}" href="{% if will_select_format %}{% url 'wagtailreferences:chooser_select_format' reference.id %}{% else %}{% url 'wagtailreferences:reference_chosen' reference.id %}{% endif %}">
+                    <h3>{{ reference.slug|ellipsistrim:60 }}</h3>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% include "wagtailadmin/shared/pagination_nav.html" with items=references is_ajax=1 %}
+{% endif %}
