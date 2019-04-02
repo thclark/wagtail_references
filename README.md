@@ -14,7 +14,7 @@ I might get around to adding some templates for the listings shown in wagtail, a
   
 ## Displaying references on the front end
 
-
+I recommend [bibtex-js](https://github.com/pcooksey/bibtex-js) for parsing and displaying the bibtex on your front end.
   
 ## Requirements
 
