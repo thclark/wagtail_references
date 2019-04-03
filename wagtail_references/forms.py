@@ -65,5 +65,5 @@ GroupReferencePermissionFormSet = collection_member_permission_formset_factory(
         ('add_reference', _("Add"), _("Add/edit references you own")),
         ('change_reference', _("Edit"), _("Edit any reference")),
     ],
-    'wagtailreferences/permissions/includes/reference_permissions_formset.html'
+    'wagtail_references/permissions/includes/reference_permissions_formset.html'
 )

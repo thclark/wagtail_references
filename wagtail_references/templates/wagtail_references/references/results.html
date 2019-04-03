@@ -19,7 +19,7 @@
         {% for reference in references %}
             <li>
                 <a class="image-choice" title="{% if collections %}{{ reference.collection.name }} » {% endif %}{{ reference.slug }}" href="{% url 'wagtailreferences:edit' reference.id %}">
-                    {% include "wagtailreferences/references/results_reference.html" %}
+                    {% include "wagtail_references/references/results_reference.html" %}
                     <h3>{{ reference.bibtex|ellipsistrim:60 }}</h3>
                 </a>
             </li>

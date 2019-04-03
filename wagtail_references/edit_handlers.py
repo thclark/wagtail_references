@@ -20,7 +20,7 @@ class ReferenceFieldComparison(ForeignObjectComparison):
     def htmldiff(self):
         reference_a, reference_b = self.get_objects()
 
-        return render_to_string("wagtailreferences/widgets/compare.html", {
+        return render_to_string("wagtail_references/widgets/compare.html", {
             'reference_a': reference_a,
             'reference_b': reference_b,
         })

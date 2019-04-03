@@ -57,7 +57,7 @@ def editor_js():
 
 class ReferencesSummaryItem(SummaryItem):
     order = 200
-    template = 'wagtailreferences/homepage/site_summary_references.html'
+    template = 'wagtail_references/homepage/site_summary_references.html'
 
     def get_context(self):
         return {

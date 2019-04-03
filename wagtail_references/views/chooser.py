@@ -95,7 +95,7 @@ def chooser(request):
             q = None
 
         paginator, images = paginate(request, references, per_page=50)
-        return render(request, "wagtailreferences/chooser/results.html", {
+        return render(request, "wagtail_references/chooser/results.html", {
             'references': references,
             'is_searching': is_searching,
             'query_string': q,
@@ -109,7 +109,7 @@ def chooser(request):
             'uploadform': uploadform,
         })
         return render_modal_workflow(
-            request, 'wagtailreferences/chooser/chooser.html', None, context
+            request, 'wagtail_references/chooser/chooser.html', None, context
         )
 
 
@@ -145,6 +145,6 @@ def chooser_select_format(request, reference_id):
         form = ReferenceInsertionForm(initial=initial)
 
     return render_modal_workflow(
-        request, 'wagtailreferences/chooser/select_format.html', None,
+        request, 'wagtail_references/chooser/select_format.html', None,
         {'reference': reference, 'form': form}, json_data={'step': 'select_format'}
     )
