@@ -38,7 +38,7 @@ class ReferencesMenuItem(MenuItem):
 @hooks.register('register_admin_menu_item')
 def register_images_menu_item():
     return ReferencesMenuItem(
-        _('References'), reverse('wagtailreferences:index'),
+        _('References'), reverse('wagtail_references:index'),
         name='references', classnames='icon icon-list-ol', order=300
     )
 
@@ -51,7 +51,7 @@ def editor_js():
             window.chooserUrls.referenceChooser = '{0}';
         </script>
         """,
-        reverse('references:chooser')
+        reverse('wagtail_references:chooser')
     )
 
 
@@ -85,7 +85,7 @@ class ReferencesSearchArea(SearchArea):
 @hooks.register('register_admin_search_area')
 def register_references_search_area():
     return ReferencesSearchArea(
-        _('References'), reverse('wagtailreferences:index'),
+        _('References'), reverse('wagtail_references:index'),
         name='references',
         classnames='icon icon-list-ol',
         order=200)
@@ -100,7 +100,7 @@ def register_reference_permissions_panel():
 def describe_collection_docs(collection):
     references_count = get_reference_model().objects.filter(collection=collection).count()
     if references_count:
-        url = reverse('wagtailreferences:index') + ('?collection_id=%d' % collection.id)
+        url = reverse('wagtail_references:index') + ('?collection_id=%d' % collection.id)
         return {
             'count': references_count,
             'count_text': ungettext(
