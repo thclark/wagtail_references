@@ -26,6 +26,7 @@ It doesn't convert tex strings, so you'll want to ensure the `WAGTAILREFERENCES_
 
 I'd like to include:
 - A better snippet editor, possibly using a json editor component and allowing the user to switch between tex and json
+- Improved listings template in wagtail
 - A `ListSerializer` for serializing out multiple references as a bibjson collection
 - A matching react component library for the front end (front end offerings are a hassle)
 - An HTML renderer and viewset 
