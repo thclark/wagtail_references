@@ -5,6 +5,7 @@ from wagtail.core.models import CollectionMember
 from wagtail.search import index
 from wagtail.search.queryset import SearchableQuerySetMixin
 from wagtail.snippets.models import register_snippet
+import jsonfield
 
 
 class ReferenceQuerySet(SearchableQuerySetMixin, models.QuerySet):
@@ -16,6 +17,7 @@ class AbstractReference(CollectionMember, index.Indexed, models.Model):
     bibtex = models.TextField(help_text=_('The reference, in bibtex format.'))
     bibtype = models.CharField(max_length=255, verbose_name=_('Bibliography entry type'), default='article', help_text=_('The entry type, detected from the BibTeX entry.'))
     created_at = models.DateTimeField(verbose_name=_('created at'), auto_now_add=True, db_index=True)
+    bibjson = jsonfield.JSONField()
     created_by_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name=_('created by user'),
         null=True, blank=True, editable=False, on_delete=models.SET_NULL
