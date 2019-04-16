@@ -1,5 +1,4 @@
 from django.test import TestCase
-import json
 
 from wagtail_references.models import Reference
 from wagtail_references.serializers import ReferenceSerializer
