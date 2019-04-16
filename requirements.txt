@@ -2,6 +2,7 @@
 bibtexparser==1.1.0
 django==2.1.4
 djangorestframework
+django-jsonfield==1.1.0
 mock==2.0.0
 wagtail==2.3
 wagtail-factories==1.1.0

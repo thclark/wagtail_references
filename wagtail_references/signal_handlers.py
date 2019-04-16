@@ -6,6 +6,7 @@ from bibtexparser.customization import homogenize_latex_encoding, convert_to_uni
 from django.conf import settings
 from django.db.models.signals import pre_save
 from wagtail_references import get_reference_model
+from wagtail_references.bibjson import record_from_entry
 
 
 logger = logging.getLogger(__name__)
@@ -29,7 +30,7 @@ def pre_save_reference_conversion(instance, **kwargs):
     """
     parser = BibTexParser()
     if getattr(settings, 'WAGTAILREFERENCES_CONVERT_BIBTEX', True):
-        if getattr(settings, 'WAGTAILREFERENCES_ENABLE_UNICODE', False):
+        if getattr(settings, 'WAGTAILREFERENCES_ENABLE_UNICODE', True):
             parser.customization = convert_to_unicode
         else:
             parser.customization = homogenize_latex_encoding
@@ -49,6 +50,11 @@ def pre_save_reference_conversion(instance, **kwargs):
     instance.slug = bib_database.entries[0]['ID']
     instance.bibtype = bib_database.entries[0]['ENTRYTYPE']
     instance.bibtex = bibtexparser.dumps(bib_database, writer=writer)
+    instance.bibjson_record = record_from_entry(
+        bib_database.entries[0]['ID'],
+        bib_database.entries[0],
+        getattr(settings, 'WAGTAILREFERENCES_COLLECTION_NAME', None)
+    )
 
 
 def register_signal_handlers():
