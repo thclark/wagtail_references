@@ -11,7 +11,8 @@ class ReferenceSerializer(serializers.ModelSerializer):
         fields = (
             'slug',
             'bibtype',
-            'bibtex'
+            'bibtex',
+            'bibjson'
         )
 
         read_only_fields = (
