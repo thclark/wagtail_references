@@ -4,7 +4,7 @@ from wagtail_factories import PageFactory
 from wagtail_references.models import Reference
 
 
-class EventFactory(PageFactory):
+class ReferenceFactory(PageFactory):
     """
     Factory for wagtail_references.models.Reference
     """
