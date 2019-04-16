@@ -2,7 +2,7 @@ import logging
 import bibtexparser
 from bibtexparser.bparser import BibTexParser
 from bibtexparser.bwriter import BibTexWriter
-from bibtexparser.customization import homogenize_latex_encoding, convert_to_unicode
+from bibtexparser.customization import homogenize_latex_encoding, convert_to_unicode, author, type
 from django.conf import settings
 from django.db.models.signals import pre_save
 from wagtail_references import get_reference_model
@@ -28,13 +28,16 @@ def pre_save_reference_conversion(instance, **kwargs):
     :param kwargs:
     :return:
     """
-    parser = BibTexParser()
-    if getattr(settings, 'WAGTAILREFERENCES_CONVERT_BIBTEX', True):
-        if getattr(settings, 'WAGTAILREFERENCES_ENABLE_UNICODE', True):
-            parser.customization = convert_to_unicode
-        else:
-            parser.customization = homogenize_latex_encoding
 
+    def customization(record):
+        if getattr(settings, 'WAGTAILREFERENCES_ENABLE_UNICODE', True):
+            record = convert_to_unicode(record)
+        if getattr(settings, 'WAGTAILREFERENCES_CONVERT_BIBTEX', False):
+            record = homogenize_latex_encoding(record)
+        return type(record)
+
+    parser = BibTexParser()
+    parser.customization = customization
     bib_database = bibtexparser.loads(instance.bibtex, parser=parser)
 
     assert len(bib_database.entries) > 0
@@ -50,9 +53,9 @@ def pre_save_reference_conversion(instance, **kwargs):
     instance.slug = bib_database.entries[0]['ID']
     instance.bibtype = bib_database.entries[0]['ENTRYTYPE']
     instance.bibtex = bibtexparser.dumps(bib_database, writer=writer)
-    instance.bibjson_record = record_from_entry(
+    instance.bibjson = record_from_entry(
         bib_database.entries[0]['ID'],
-        bib_database.entries[0],
+        author(bib_database.entries[0]),  # Note the parser customization to split
         getattr(settings, 'WAGTAILREFERENCES_COLLECTION_NAME', None)
     )
 

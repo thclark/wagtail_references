@@ -1,18 +1,9 @@
-# from datetime import timedelta
-# from django.core.exceptions import ValidationError
-# from django.core.paginator import Page as PaginatorPage
-# from django.core.paginator import Paginator
 from django.test import TestCase
-# from django.utils import timezone
-# from mock import patch, Mock
-# from modelcluster.fields import ParentalKey
-# from wagtail.core.fields import StreamField
-# from wagtail.core.models import Page
-# from wagtail_factories import SiteFactory
+import json
 
-
-# from tests import factories
-# from wagtail_references.models import Reference
+from wagtail_references.models import Reference
+from wagtail_references.serializers import ReferenceSerializer
+from wagtail_references import examples
 
 
 class TestReference(TestCase):
@@ -32,3 +23,15 @@ class TestReference(TestCase):
         :return:
         """
         pass
+
+    def test_serializer(self):
+        ref = Reference.objects.create(bibtex=examples.article1)
+        ref.save()
+        ser = ReferenceSerializer()
+        rep = ser.to_representation(ref)
+        self.assertIn('bibjson', rep.keys())
+        bibjson = rep['bibjson']
+        self.assertIn('journal', bibjson.keys())
+        self.assertIn('title', bibjson.keys())
+        self.assertIn('author', bibjson.keys())
+        self.assertEqual(6, len(bibjson['author']))

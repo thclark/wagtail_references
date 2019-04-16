@@ -398,17 +398,16 @@ def _fill_journal(r, entry):
     :param entry: bibtexparser entry that will be used to fill the BibJSON record
     :return None
     """
-    if 'journal' not in entry or 'volume' not in entry:
+    if 'journal' not in entry.keys():
         return
 
-    # fill with required fields
+    # fill with required field
     r['journal'] = {
-        'name': entry['journal'],
-        'volume': entry['volume']
+        'name': entry['journal']
     }
 
     # fill optional fields
-    opt_keys = ('number', 'pages', 'month')
+    opt_keys = ('number', 'pages', 'month', 'volume')
     for k in opt_keys:
         if k in entry:
             r['journal'][k] = entry[k]

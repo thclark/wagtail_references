@@ -18,7 +18,7 @@ with open('README.md') as f:
 
 setup(
     name='wagtail_references',
-    version='0.1.1',
+    version='0.1.2',
     description='BibTeX references for Wagtail',
     long_description=readme_text,
     author='thclark',

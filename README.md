@@ -100,9 +100,8 @@ The `bibjson` is stored natively as JSON if you have POSTGRES, otherwise as a st
 
 The following settings can be defined in your `SETTINGS.py`:
 
-- **WAGTAILREFERENCES_CONVERT_BIBTEX** (default: `True`) Strongly recommended! Before saving new records, `bibtexparser`
-is used to load, validate and homogenize the record, as well as to set its corresponding bibjson entry. Without it,
-records may not be valid bibtex, so turn this off only if you really understand what you're doing and why.
+- **WAGTAILREFERENCES_CONVERT_BIBTEX** (default: `False`) Before saving new records, the record will be homogenized to
+strict latex. This forces a conversion to unicode and, for example, adds braces to force capitalization.
 - **WAGTAILREFERENCES_ENABLE_UNICODE** (default: `True`) If enabled, items such as `"C{\"o}ze"` will be converted to
 their unicode equivalents. If you're using entries in a LaTeX rendering engine, this isn't necessary. If you're
 using them to rendering HTML (which you probably are, this is a web CMS after all), you probably want this.
