@@ -18,7 +18,7 @@ with open('README.md') as f:
 
 setup(
     name='wagtail_references',
-    version='0.1.2',
+    version='0.2.0',
     description='BibTeX references for Wagtail',
     long_description=readme_text,
     author='thclark',
@@ -33,7 +33,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        "Operating System :: OS Independent"
+        'Operating System :: OS Independent'
     ],
     include_package_data=True,
     install_requires=[
