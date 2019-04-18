@@ -1,18 +1,19 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from wagtail.core.models import CollectionMember
+from wagtail.core.models import CollectionMember, Orderable
 from wagtail.search import index
 from wagtail.search.queryset import SearchableQuerySetMixin
 from wagtail.snippets.models import register_snippet
 import jsonfield
+from modelcluster.models import ClusterableModel
 
 
 class ReferenceQuerySet(SearchableQuerySetMixin, models.QuerySet):
     pass
 
 
-class AbstractReference(CollectionMember, index.Indexed, models.Model):
+class AbstractReference(ClusterableModel, CollectionMember, Orderable, index.Indexed, models.Model):
     slug = models.CharField(max_length=255, unique=True, verbose_name=_('slug'), help_text=_('A short key to cite the reference by. Determined from the BibTeX entry key. Must be unique.'))
     bibtex = models.TextField(help_text=_('The reference, in bibtex format.'))
     bibtype = models.CharField(max_length=255, verbose_name=_('Bibliography entry type'), default='article', help_text=_('The entry type, detected from the BibTeX entry.'))
