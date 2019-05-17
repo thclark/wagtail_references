@@ -30,6 +30,17 @@ class TestReferenceAdminViews(TestCase, WagtailTestUtils):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Reference.objects.count(), 1)
 
+    def test_get_edit_view(self):
+        """ Test the ability to load the edit page for a reference
+        """
+        self.client.post(
+            reverse('wagtail_references:add'),
+            data={'bibtex': examples.article1},
+        )
+        response = self.client.get('/admin/references/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'wagtail_references/references/edit.html')
+
     def test_broken_bibtex(self):
         """ Test what happens when broken or incomplete bibtex is supplied
         """
@@ -63,6 +74,7 @@ class TestReferenceAdminViews(TestCase, WagtailTestUtils):
 
         # Ensure the slug is the same but autoincremented
         ref1 = Reference.objects.first()
+        print(ref1)
         ref2 = Reference.objects.last()
         self.assertEqual(ref2.slug, '{}-2'.format(ref1.slug))
 
