@@ -14,12 +14,10 @@ from modelcluster.models import ClusterableModel
 from bibtexparser.bparser import BibTexParser
 from bibtexparser.bwriter import BibTexWriter
 from bibtexparser.customization import homogenize_latex_encoding, convert_to_unicode, author, type
-
 from wagtail_references.bibjson import record_from_entry
 
 
 logger = logging.getLogger(__name__)
-
 
 
 class ReferenceQuerySet(SearchableQuerySetMixin, models.QuerySet):
@@ -150,7 +148,7 @@ class Reference(AbstractReference):
         writer = BibTexWriter()
         writer.indent = '    '
 
-        if not self.slug:
+        if (not self.slug) or (len(self.slug) == 0):
             self.set_slug_from_entry(bib_database.entries[0])
 
         bib_database.entries[0]['ID'] = self.slug
