@@ -3,15 +3,12 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
-
 from wagtail.admin.menu import MenuItem
 from wagtail.admin.search import SearchArea
 from wagtail.admin.site_summary import SummaryItem
 from wagtail.core import hooks
 
-
 from wagtail_references import admin_urls, get_reference_model
-# from references.api.admin.endpoints import ReferencesAdminAPIEndpoint
 from wagtail_references.forms import GroupReferencePermissionFormSet
 from wagtail_references.permissions import permission_policy
 
@@ -21,11 +18,6 @@ def register_admin_urls():
     return [
         url(r'^references/', include(admin_urls, namespace='wagtailreferences')),
     ]
-
-
-# @hooks.register('construct_admin_api')
-# def construct_admin_api(router):
-#     router.register_endpoint('references', ReferencesAdminAPIEndpoint)
 
 
 class ReferencesMenuItem(MenuItem):
