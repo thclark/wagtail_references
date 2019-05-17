@@ -74,7 +74,6 @@ class TestReferenceAdminViews(TestCase, WagtailTestUtils):
 
         # Ensure the slug is the same but autoincremented
         ref1 = Reference.objects.first()
-        print(ref1)
         ref2 = Reference.objects.last()
         self.assertEqual(ref2.slug, '{}-2'.format(ref1.slug))
 
