@@ -74,26 +74,43 @@ python manage.py migrate wagtail_references
 ## Reference Model
 
 There's only one database model ``Reference``, which is registered as a snippet in Wagtail, making it searchable and
-selectable. The model has a (required) ``slug`` field which is automatically set by signal handlers which extract and normalise the reference key.
+selectable. 
+
+### Slugs 
+
+The model has a (required, unique) ``slug`` field which is automatically set from bibtex contents when a reference
+is added.
 
 For example, if you have the following bibtex entry:
 ```
 @article{Clark2017a,
-author = {Clark, Thomas H. E. and Lueck, Rolf G. and Hay, Alex E. and Davey, Thomas and Stern, Peter and Horwitz, Rachel and Pearson, Nicola},
+author = {Clark, Thomas H. E. and Lueck, Rolf G. and Hay, Alex E. and Davey, Thomas and Stern, Peter and Horwitz, Rachel},
 journal = {Proc. of the 12th European Wave and Tidal Energy Conference},
 pages = {7},
 title = {{InSTREAM : Measurement , Characterisation and Simulation of Turbulence from Test Tank to Ocean .}},
 year = {2017}
 }
 ``` 
-the slug will automatically be set to clark2017a. Duplicate slugs are not valid, which is how we maintain uniqueness
-across all the references added to the CMS.
+the slug will automatically be set to ``clark-lueck-hay-davey-stern-horwitz-2017``, with an appended ``-2``, ``-3`` etc
+to maintain uniqueness.
 
-The reference model comprises a `bibtex` field (containing the bibtex string, raw) and a `bibjson` field. 
+The citation key for the bibtex entry will be updated to correspond:
+```
+@article{clark-lueck-hay-davey-stern-horwitz-2017,
+author = ... etc etc ...
+}
+``` 
+
+Uniqueness is enforced at form validation and database level. Slugs may be edited manually after creation of a reference.
+
+### bibtex and bibjson
+
+The reference model comprises both a `bibtex` field (containing the bibtex string, raw) and a `bibjson` field. 
 *Yes, I know this is duplication of data. But I'd rather do that than incur the cost of re-parsing the data every time I
 want to serialize it out in a different form. I could've chosen to cache it, but then I don't know how much memory you 
 folks have, and don't want to screw your cache if you're managing a lot of references). It was a judgement call. 
 Use-case and an alternative solution? File an issue.*
+
 The `bibjson` is stored natively as JSON if you have POSTGRES, otherwise as a string (thanks to [`django-jsonfield`](https://github.com/adamchainz/django-jsonfield)).
 
 
