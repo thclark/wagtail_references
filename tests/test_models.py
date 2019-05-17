@@ -68,6 +68,8 @@ class TestReferenceAdminViews(TestCase, WagtailTestUtils):
             reverse('wagtail_references:add'),
             data={'bibtex': examples.article1},
         )
+        self.assertEqual(response2.status_code, 302)
+        self.assertEqual(Reference.objects.count(), 2)
 
         # Ensure the slug is the same but autoincremented
         ref1 = Reference.objects.first()
