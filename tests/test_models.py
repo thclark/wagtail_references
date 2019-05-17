@@ -23,6 +23,16 @@ class TestReference(TestCase):
         """
         pass
 
+    def test_duplicate_slug_handled(self):
+        """ Tests that autoslugging correctly handles duplicate slugs.
+        For versions <= 0.2.0 the slug of the snippet was automatically extracted from the bibtex. This caused a server
+        error on duplicate slugs if you re-entered the same reference (or anotehr one with the same reference string)
+        """
+        ref1 = Reference.objects.create(bibtex=examples.article1)
+        ref1.save()
+        ref2 = Reference.objects.create(bibtex=examples.article1)
+        ref2.save()
+
     def test_serializer(self):
         ref = Reference.objects.create(bibtex=examples.article1)
         ref.save()
