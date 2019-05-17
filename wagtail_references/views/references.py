@@ -78,7 +78,7 @@ def index(request):
 @permission_checker.require('change')
 def edit(request, reference_id):
     Reference = get_reference_model()
-    ReferenceForm = get_reference_form(Reference)
+    ReferenceForm = get_reference_form(Reference, include_slug=True)
 
     reference = get_object_or_404(Reference, id=reference_id)
 
