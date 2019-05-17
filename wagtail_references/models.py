@@ -15,7 +15,6 @@ from bibtexparser.bparser import BibTexParser
 from bibtexparser.bwriter import BibTexWriter
 from bibtexparser.customization import homogenize_latex_encoding, convert_to_unicode, author, type
 from wagtail_references.bibjson import record_from_entry
-from wagtail.admin.edit_handlers import TabbedInterface, ObjectList
 
 
 logger = logging.getLogger(__name__)
@@ -29,7 +28,6 @@ class AbstractReference(ClusterableModel, CollectionMember, Orderable, index.Ind
     slug = models.SlugField(
         verbose_name=_('slug'),
         allow_unicode=False,
-        blank=False,
         unique=True,
         max_length=255,
         help_text=_("A short key to cite the reference by. Determined from the BibTeX entry key. Must be unique.")
@@ -67,9 +65,9 @@ class AbstractReference(ClusterableModel, CollectionMember, Orderable, index.Ind
 @register_snippet
 class Reference(AbstractReference):
 
+    # Note slug field is added into the edit form only, not for creation
     admin_form_fields = (
         'bibtex',
-        'slug',
         'collection',
     )
 

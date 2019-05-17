@@ -14,7 +14,7 @@ class BaseReferenceForm(BaseCollectionMemberForm):
     permission_policy = references_permission_policy
 
 
-def get_reference_form(model):
+def get_reference_form(model, include_slug=False):
     fields = model.admin_form_fields
     if 'collection' not in fields:
         # force addition of the 'collection' field, because leaving it out can
@@ -22,6 +22,10 @@ def get_reference_form(model):
         # document to the root collection where the user may not have permission) -
         # and when only one collection exists, it will get hidden anyway.
         fields = list(fields) + ['collection']
+
+    if include_slug and 'slug' not in fields:
+        # we want to include slug in edit forms, but not in addition form
+        fields = list(fields) + ['slug']
 
     return modelform_factory(
         model,
