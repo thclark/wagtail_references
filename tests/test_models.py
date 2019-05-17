@@ -1,20 +1,10 @@
-from django.test import TestCase, Client
-from django.urls import reverse, get_urlconf
-from django.utils.http import RFC3986_SUBDELIMS, urlquote
-from wagtail.core.models import Page
+from django.test import TestCase
+from django.urls import reverse
 from wagtail.tests.utils import WagtailTestUtils
-import json
 
 from wagtail_references.models import Reference
 from wagtail_references.serializers import ReferenceSerializer
 from wagtail_references import examples
-from wagtail_references.wagtail_hooks import register_admin_urls
-
-
-# Get the chars that Django considers safe to leave unescaped in a URL
-urlquote_safechars = RFC3986_SUBDELIMS + str('/~:@')
-
-c = Client()
 
 
 class TestReferenceAdminViews(TestCase, WagtailTestUtils):
