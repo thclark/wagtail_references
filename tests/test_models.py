@@ -1,24 +1,52 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse, get_urlconf
+from django.utils.http import RFC3986_SUBDELIMS, urlquote
+from wagtail.core.models import Page
+from wagtail.tests.utils import WagtailTestUtils
+import json
 
 from wagtail_references.models import Reference
 from wagtail_references.serializers import ReferenceSerializer
 from wagtail_references import examples
+from wagtail_references.wagtail_hooks import register_admin_urls
 
 
-class TestReference(TestCase):
+# Get the chars that Django considers safe to leave unescaped in a URL
+urlquote_safechars = RFC3986_SUBDELIMS + str('/~:@')
+
+c = Client()
+
+
+class TestReferenceAdminViews(TestCase, WagtailTestUtils):
 
     def setUp(self):
-        pass
+        self.login()
+
+    def test_index(self):
+        """ Test that the index page renders with the correct template
+        """
+        response = self.client.get(reverse('wagtail_references:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'wagtail_references/references/index.html')
+        self.assertContains(response, "Add a reference")
+
+    def test_add(self):
+        """ Test the ability to post a new reference
+        """
+        response = self.client.post(
+            reverse('wagtail_references:add'),
+            data={'bibtex': examples.article1},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Reference.objects.count(), 1)
 
     def test_broken_bibtex(self):
-        """
-        Tests what happens when broken or incomplete bibtex is supplied
+        """ Test what happens when broken or incomplete bibtex is supplied
         """
         pass
 
     def test_multiple_entries(self):
-        """
-        Tests that multiple bibtex entries are ignored favouring only the first one
+        """ Test that multiple bibtex entries are ignored favouring only the first one
         :return:
         """
         pass
@@ -26,12 +54,25 @@ class TestReference(TestCase):
     def test_duplicate_slug_handled(self):
         """ Tests that autoslugging correctly handles duplicate slugs.
         For versions <= 0.2.0 the slug of the snippet was automatically extracted from the bibtex. This caused a server
-        error on duplicate slugs if you re-entered the same reference (or anotehr one with the same reference string)
+        error on duplicate slugs if you re-entered the same reference (or another one with the same reference string)
         """
-        ref1 = Reference.objects.create(bibtex=examples.article1)
-        ref1.save()
-        ref2 = Reference.objects.create(bibtex=examples.article1)
-        ref2.save()
+        response = self.client.post(
+            reverse('wagtail_references:add'),
+            data={'bibtex': examples.article1},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Reference.objects.count(), 1)
+
+        # Post the same one again
+        response2 = self.client.post(
+            reverse('wagtail_references:add'),
+            data={'bibtex': examples.article1},
+        )
+
+        # Ensure the slug is the same but autoincremented
+        ref1 = Reference.objects.first()
+        ref2 = Reference.objects.last()
+        self.assertEqual(ref2.slug, '{}-2'.format(ref1.slug))
 
     def test_serializer(self):
         ref = Reference.objects.create(bibtex=examples.article1)
