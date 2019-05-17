@@ -21,6 +21,7 @@ setup(
     version='0.2.1',
     description='BibTeX references for Wagtail',
     long_description=readme_text,
+    long_description_content_type="text/markdown",
     author='thclark',
     author_email='withheld.find@me.at.github.com',
     url='https://github.com/thclark/wagtail_references',
