@@ -8,9 +8,19 @@
  This behaviour caused a confusing error on the references listing view where it
  would go blank if one of the references was invalid.
 
- Separating the refereence rendering code into this file allows us to limit Django's
+ Separating the reference rendering code into this file allows us to limit Django's
  crash/blanking behaviour to a single reference so the listing can still be used when
  the issue occurs.
 {% endcomment %}
+{% load wagtailimages_tags wagtailadmin_tags %}
+{% load i18n %}
+<a class="image-choice" title="{% if collections %}{{ reference.collection.name }} » {% endif %}{{ reference.slug }}" href="{% url 'wagtailreferences:edit' reference.id %}">
+    <h3><strong>Slug (citation key):</strong> {{ reference.slug }}</h3>
+    <h3><strong>Type:</strong> {{ reference.bibtype }}</h3>
+{#    <h3><strong>Bibtex:</strong> {{ reference.bibtex|ellipsistrim:140 }}</h3>#}
+    <h3><strong>Preview:</strong></h3>
+    <div id="{{ reference.slug }}"></div>
+</a>
+<script type="text/javascript"> renderToDiv("{{ reference.bibtex_string }}", "{{ reference.slug }}") </script>
 
-<div class="image">{{ reference.slug }}</div>
+

@@ -7,28 +7,105 @@ BibTeX based bibliography entries, as wagtail snippets
 
 **"But, where are the templates?!"** is a natural question. Answer: There aren't any templates or tags so far...
 I run all my wagtail installations in headless mode with a react front end, so can only justify putting in place the
-templates for managing the references on wagtail.
+templates for managing the references on wagtail (for now). But see below for how to do it yourself.
 
-If you'd like to do so, I'm very open to collaboration :)
+If you'd like to make a PR with tmplates, I'm very open to collaboration :)
 
-I might get around to adding some templates for the listings shown in wagtail, as they're currently pretty ugly (showing
- the raw BibTeX) but will see if this project gets some traction and users first. **Bottom line: Star this repo on Github
- , so I know you're reading this and interested!** 
+I'm gradually improving wagtail admin templates, I'll do an ever-better job as the library gets more traction and users.
+**Bottom line: Star this repo on Github if you use or like it, so I know it's getting traction!** 
 
 
 ## Displaying references on the front end
 
-I recommend [bibtex-js](https://github.com/digitalheir/bibtex-js) for parsing and displaying the bibtex on your front end. 
-It doesn't convert tex strings, so you'll want to ensure the `WAGTAILREFERENCES_ENSURE_UNICODE` setting is True.  
+### Write your own templates/html
+
+I use [citation.js](https://citation.js.org/api/tutorial-getting_started.html) for parsing and displaying the bibtex 
+in the wagtail admin, it's usable in-browser (in a template) like this:
+
+```html
+<!-- Using citation.js https://citation.js.org/api/tutorial-getting_started.html -->
+<script src="https://cdn.jsdelivr.net/npm/citation-js" type="text/javascript"></script>
+<script type="text/javascript">
+  const Cite = require('citation-js')
+  function renderToDiv(inputBibtex, divId) {
+      const citation = new Cite(inputBibtex)
+      const outputHtml = citation.format('bibliography', {
+        format: 'html',
+        template: 'apa',
+        lang: 'en-US'
+      })
+      outputDiv = document.getElementById(divId)
+      outputDiv.innerHTML = outputHtml
+  }
+</script>
+
+<h3><strong>Slug (citation key):</strong> {{ reference.slug }}</h3>
+<h3><strong>Type:</strong> {{ reference.bibtype }}</h3>
+<div id="{{ reference.slug }}"></div>
+<script type="text/javascript"> renderToDiv("{{ reference.bibtex_string }}", "{{ reference.slug }}") </script>
+```
+
+### Using react (wagtail in headless mode)
+
+On the frontend, I use react (see aforementioned nanorant about using wagtail in a headless mode). I'm presently using 
+[react-citeproc](https://github.com/robindemourat/react-citeproc) along with
+ [biblatex-csl-converter](https://github.com/fiduswriter/biblatex-csl-converter) in a project and it works out pretty
+ well. Your component will look like this-ish:
+ 
+```javascript
+import React from 'react'
+import { Bibliography } from 'react-citeproc'
+import raw from 'raw.macro'
+
+import { BibLatexParser, CSLExporter } from 'biblatex-csl-converter'
+
+const style = raw('assets/csl/apa-style.csl')
+const locale = raw('assets/csl/xml-locale.xml')
+
+class Reference extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      bibtex: undefined,
+      csl: undefined,
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.bibtex !== prevState.bibtex) {
+      const parser = new BibLatexParser(nextProps.detail.bibtex, { processUnexpected: false, processUnknown: false })
+      const csl = new CSLExporter(parser.output).parse()
+      return {
+        bibtex: nextProps.detail.bibtex,
+        csl,
+      }
+    }
+    return null
+  }
+
+  render() {
+    return (
+      <div className={classes.bibliography}>
+        <Bibliography
+          style={style}
+          locale={locale}
+          items={this.state.csl}
+        />
+      </div>
+    )
+  }
+}
+
+export default Reference
+```
+
 
 
 ## Roadmap
 
 I'd like to include:
 - A better snippet editor, possibly using a json editor component and allowing the user to switch between tex and json
-- Improved listings template in wagtail
 - A `ListSerializer` for serializing out multiple references as a bibjson collection
-- A matching react component library for the front end (front end offerings are a hassle)
 - An HTML renderer and viewset 
 
 
