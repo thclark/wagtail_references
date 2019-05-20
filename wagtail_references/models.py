@@ -1,6 +1,7 @@
+import bibtexparser
 import jsonfield
 import logging
-import bibtexparser
+import re
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -170,3 +171,9 @@ class Reference(AbstractReference):
         super().clean()
         if not Reference._slug_is_available(self.slug):
             raise ValidationError({'slug': _("This slug is already in use")})
+
+    @property
+    def bibtex_string(self):
+        """ Returns teh bibtex as a single string with no line breaks
+        """
+        return re.sub(r'[\n\r]+', '', self.bibtex)
