@@ -12,6 +12,15 @@ year = {2017}
 }
 """
 
+article1_edited = """@article{Clark2017a,
+author = {Fewer, AuthorsAfterEditing},
+journal = {Proc. of the 12th European Wave and Tidal Energy Conference},
+pages = {7},
+title = {{InSTREAM : Measurement , Characterisation and Simulation of Turbulence from Test Tank to Ocean .}},
+year = {2017}
+}
+"""
+
 article2 = """@article{Shives2011,
 abstract = {ABSTRACT:This paper presents a blah blah blah... },
 author = {Shives, Michael and Crawford, Curran},
