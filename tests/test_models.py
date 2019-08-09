@@ -41,6 +41,50 @@ class TestReferenceAdminViews(TestCase, WagtailTestUtils):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'wagtail_references/references/edit.html')
 
+    def test_get_edit_with_same_slug(self):
+        """ Test the ability to edit a reference whilst retaining the same slug
+        """
+        self.client.post(
+            reverse('wagtail_references:add'),
+            data={'bibtex': examples.article1},
+        )
+        ref = Reference.objects.first()
+        ref.bibtex = examples.article1_edited,
+        response = self.client.post(
+            reverse('wagtail_references:edit', args=(ref.id,)),
+            data={
+                'bibtex': examples.article1_edited,
+                'slug': ref.slug,
+            },
+            follow=False,
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Reference.objects.count(), 1)
+        ref_updated = Reference.objects.first()
+        self.assertEqual('Fewer, AuthorsAfterEditing', ref_updated.bibjson['author'][0]['name'])
+
+    def test_get_edit_with_new_slug(self):
+        """ Test the ability to edit a reference whilst retaining the same slug
+        """
+        self.client.post(
+            reverse('wagtail_references:add'),
+            data={'bibtex': examples.article1},
+        )
+        ref = Reference.objects.first()
+        ref.bibtex = examples.article1_edited,
+        response = self.client.post(
+            reverse('wagtail_references:edit', args=(ref.id,)),
+            data={
+                'bibtex': examples.article1,
+                'slug': 'some-new-slug',
+            },
+            follow=False,
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Reference.objects.count(), 1)
+        ref_updated = Reference.objects.first()
+        self.assertEqual('some-new-slug', ref_updated.bibjson['citekey'])
+
     def test_broken_bibtex(self):
         """ Test what happens when broken or incomplete bibtex is supplied
         """
