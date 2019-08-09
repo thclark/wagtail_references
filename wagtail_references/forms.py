@@ -46,23 +46,6 @@ class ReferenceInsertionForm(forms.Form):
     bibtex = forms.CharField()
 
 
-# class URLGeneratorForm(forms.Form):
-#     filter_method = forms.ChoiceField(
-#         label=_("Filter"),
-#         choices=(
-#             ('original', _("Original size")),
-#             ('width', _("Resize to width")),
-#             ('height', _("Resize to height")),
-#             ('min', _("Resize to min")),
-#             ('max', _("Resize to max")),
-#             ('fill', _("Resize to fill")),
-#         ),
-#     )
-#     width = forms.IntegerField(label=_("Width"), min_value=0)
-#     height = forms.IntegerField(label=_("Height"), min_value=0)
-#     closeness = forms.IntegerField(label=_("Closeness"), min_value=0, initial=0)
-
-
 GroupReferencePermissionFormSet = collection_member_permission_formset_factory(
     Reference,
     [
