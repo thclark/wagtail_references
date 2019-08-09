@@ -45,6 +45,7 @@ class ReferenceInsertionForm(forms.Form):
     # )
     bibtex = forms.CharField()
 
+
 GroupReferencePermissionFormSet = collection_member_permission_formset_factory(
     Reference,
     [
