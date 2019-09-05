@@ -18,7 +18,7 @@ with open('README.md') as f:
 
 setup(
     name='wagtail_references',
-    version='0.2.5',
+    version='0.2.6',
     description='BibTeX references for Wagtail',
     long_description=readme_text,
     long_description_content_type="text/markdown",
@@ -39,7 +39,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django>=2.1',
-        'django-jsonfield>=1.1.0',
+        'django-jsonfield>=1.3.0',
         'wagtail>=2.3',
         'bibtexparser>=1.1.0',
     ],
